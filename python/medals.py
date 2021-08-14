@@ -17,12 +17,30 @@ medalResults = [
     }
 ]
 
+POINTS_PER_POSITION = {1: 3, 2: 2, 3: 1}
+
 def createMedalTable(results):
-    # Use the results object above to create a medal table
-    # The winner gets 3 points, second place 2 points and third place 1 point
-    return
+    '''
+    Creates a dictionary with countries and their total number of points based 
+    on podium positions aquired in each sport.
+    
+    Parameters
+    ----------
+    results : a list of dictionaries, each dictionary describing a sport and its podium.
 
+    Returns
+    -------
+    medalTable : a dictionary with countries as keys and total points as values.
 
+    '''
+    medalTable = {}
+    for sport in results:
+        podium = sport.get("podium")
+        for entry in podium:
+            position, country = entry.split(".")
+            medalTable[country] = medalTable.get(country, 0) + POINTS_PER_POSITION[int(position)]    
+    return medalTable
+            
 def test_function():
     #This it the test function, please don't change me
     medalTable = createMedalTable(medalResults)
