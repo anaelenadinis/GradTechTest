@@ -1,3 +1,5 @@
+import unittest
+
 medalResults = [
     {
         "sport": "cycling",
@@ -19,6 +21,19 @@ medalResults = [
 
 POINTS_PER_POSITION = {1: 3, 2: 2, 3: 1}
 
+def validatePodium(podium):
+     countries = []
+     for entry in podium:
+            position, country = entry.split(".")
+            #check if podium position is valid
+            if int(position) not in [1, 2, 3]:
+                raise ValueError("Invalid podium position")
+            #check for country duplicates on podium
+            if country in countries:           
+                raise ValueError("Duplicate country on podium")
+            countries.append(country)
+            
+
 def createMedalTable(results):
     '''
     Creates a dictionary with countries and their total number of points based 
@@ -36,6 +51,7 @@ def createMedalTable(results):
     medalTable = {}
     for sport in results:
         podium = sport.get("podium")
+        validatePodium(podium)
         for entry in podium:
             position, country = entry.split(".")
             medalTable[country] = medalTable.get(country, 0) + POINTS_PER_POSITION[int(position)]    
@@ -56,3 +72,29 @@ def test_function():
         "Belarus": 1,
     }
     assert medalTable == expectedTable
+
+#I think it would be better to have the tests in a different file, but I wrote the class
+#here so it can be tested with pytest medals.py.
+class MedalTableTestCases(unittest.TestCase):
+    def test_createMedalTable_shouldThrowErrorIfCountryAppearsMoreThanOnceOnPodium(self):
+        medalResults = [
+            {
+                "sport": "cycling",
+                "podium": ["1.China", "2.China", "3.ROC"]
+            }
+        ]
+        with self.assertRaises(ValueError) as ex:
+            createMedalTable(medalResults)
+        self.assertEqual(str(ex.exception), "Duplicate country on podium")
+        
+    def test_createMedalTable_shouldThrowErrorIfPositionNotOnPodium(self):
+        medalResults = [
+            {
+                "sport": "cycling",
+                "podium": ["1.China", "2.USA", "5.ROC"]
+            }
+        ]
+        with self.assertRaises(ValueError) as ex:
+            createMedalTable(medalResults)
+        self.assertEqual(str(ex.exception), "Invalid podium position")
+    
