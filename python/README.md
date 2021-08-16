@@ -2,11 +2,11 @@
 
 ## Description
 
-This project is separated into two files, one for functionality (medals.py) and one for unit tests (medals_tests.py).  
+This project is separated into two files, one for functionality (medals.py) and one for unit tests (medals_tests.py).
 
 In the file medals.py, the function createMedalTable returns a dictionary containing country names and the number of points accumulated based on their podium position in various sports.
 
-The file medals_tests.py contains three unit tests. The first one is the original test function which I included in the class for cohesion. The second function tests for country duplicates on the podium. The third function tests for invalid podium positions.  
+The file medals_tests.py contains three unit tests. The first one is the original test function which I included in the class for cohesion. The second function tests for country duplicates on the podium. The third function tests for invalid podium positions.
 
 ## Thought process
 
