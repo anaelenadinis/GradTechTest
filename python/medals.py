@@ -1,5 +1,3 @@
-import unittest
-
 medalResults = [
     {
         "sport": "cycling",
@@ -49,52 +47,10 @@ def createMedalTable(results):
 
     '''
     medalTable = {}
-    for sport in results:
-        podium = sport.get("podium")
+    for result in results:
+        podium = result.get("podium")
         validatePodium(podium)
         for entry in podium:
             position, country = entry.split(".")
             medalTable[country] = medalTable.get(country, 0) + POINTS_PER_POSITION[int(position)]    
     return medalTable
-            
-def test_function():
-    #This it the test function, please don't change me
-    medalTable = createMedalTable(medalResults)
-    expectedTable = {
-        "Italy": 4,
-        "France": 4,
-        "ROC": 4,
-        "USA": 3,
-        "Qatar": 3,
-        "China": 3,
-        "Germany": 2,
-        "Brazil": 1,
-        "Belarus": 1,
-    }
-    assert medalTable == expectedTable
-
-#I think it would be better to have the tests in a different file, but I wrote the class
-#here so it can be tested with pytest medals.py.
-class MedalTableTestCases(unittest.TestCase):
-    def test_createMedalTable_shouldThrowErrorIfCountryAppearsMoreThanOnceOnPodium(self):
-        medalResults = [
-            {
-                "sport": "cycling",
-                "podium": ["1.China", "2.China", "3.ROC"]
-            }
-        ]
-        with self.assertRaises(ValueError) as ex:
-            createMedalTable(medalResults)
-        self.assertEqual(str(ex.exception), "Duplicate country on podium")
-        
-    def test_createMedalTable_shouldThrowErrorIfPositionNotOnPodium(self):
-        medalResults = [
-            {
-                "sport": "cycling",
-                "podium": ["1.China", "2.USA", "5.ROC"]
-            }
-        ]
-        with self.assertRaises(ValueError) as ex:
-            createMedalTable(medalResults)
-        self.assertEqual(str(ex.exception), "Invalid podium position")
-    
